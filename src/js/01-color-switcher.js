@@ -9,9 +9,10 @@ selectors.stopBtnEl.addEventListener("click", handlerStop);
 
 function handlerStart() {
     onStart();
-    return changeBackground = setInterval(() => {
+    const changeBackground = setInterval(() => {
         selectors.bodyEl.style.backgroundColor = getRandomHexColor()
     }, 1000)
+    return changeBackground;
 }
 
 function handlerStop() {
