@@ -5,12 +5,17 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const selectors = {
     inputEl: document.querySelector('[id="datetime-picker"]'),
     buttonEl: document.querySelector('[data-start]'),
-    timerEl: document.querySelector('.timer'),
+    spansEl: document.querySelectorAll('.value'),
+    days: document.querySelector('data-days'),
+    hours: document.querySelector('data-hours'),
+    minutes: document.querySelector('data-minutes'),
+    seconds: document.querySelector('data-seconds'),
 };
 
 selectors.buttonEl.addEventListener('click', handlerStart);
 
 selectors.buttonEl.disabled = true;
+
 let selectedDateArr = [];
 
 const options = {
@@ -19,7 +24,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-      console.log(selectedDates[0]);
+    //   console.log(selectedDates[0]);
 
       const currentDate = new Date();
       if (selectedDates[0] - currentDate < 0) {
@@ -37,17 +42,23 @@ const options = {
 
 flatpickr(selectors.inputEl, options);
 
- 
+
 
 function handlerStart() {
     if (selectedDateArr.length === 0) {
         return;
     } else {
         const selectedDay = selectedDateArr[0];
-        console.log('selectedDay', selectedDay);
-    }
-        
-     
+        // console.log('selectedDay', selectedDay);
+        const currentDate = new Date();
+        timerValue = convertMs(selectedDay - currentDate);
+        console.log(timerValue)
+        const timerId = { days, hours, minutes, seconds } = convertMs(timerValue);
+        console.log(timerId)
+        setInterval(() => {
+            
+        })
+    }  
 }
 
 
