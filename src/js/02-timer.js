@@ -6,65 +6,58 @@ const selectors = {
     inputEl: document.querySelector('[id="datetime-picker"]'),
     buttonEl: document.querySelector('[data-start]'),
     spansEl: document.querySelectorAll('.value'),
-    days: document.querySelector('data-days'),
-    hours: document.querySelector('data-hours'),
-    minutes: document.querySelector('data-minutes'),
-    seconds: document.querySelector('data-seconds'),
+    containerEl: document.querySelector('.timer'),
 };
 
 selectors.buttonEl.addEventListener('click', handlerStart);
 
 selectors.buttonEl.disabled = true;
 
-let selectedDateArr = [];
-
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+    onOpen() {
+      require("flatpickr/dist/themes/confetti.css");
+  },
   onClose(selectedDates) {
-    //   console.log(selectedDates[0]);
-
       const currentDate = new Date();
       if (selectedDates[0] - currentDate < 0) {
           Notify.failure('Please choose a date in the future');  
-          selectedDates = [];
           selectors.buttonEl.disabled = true;
       } else {
           selectors.buttonEl.disabled = false;
           Notify.success('Press start!');
       }
-      selectedDateArr = [];
-      selectedDateArr.push(selectedDates[0]);
     },
 };
 
 flatpickr(selectors.inputEl, options);
 
-
-
 function handlerStart() {
-    if (selectedDateArr.length === 0) {
-        return;
-    } else {
-        const selectedDay = selectedDateArr[0];
-        // console.log('selectedDay', selectedDay);
+    const timer = setInterval(() => {
+        const selectedDay = new Date(selectors.inputEl.value);
         const currentDate = new Date();
-        timerValue = convertMs(selectedDay - currentDate);
-        console.log(timerValue)
-        const timerId = { days, hours, minutes, seconds } = convertMs(timerValue);
-        console.log(timerId)
-        setInterval(() => {
-            
-        })
-    }  
-}
+        selectors.buttonEl.disabled = true;
+        
+        timerValue = selectedDay - currentDate;
+        const { days, hours, minutes, seconds } = convertMs(timerValue);
+        selectors.spansEl[0].textContent = addLeadingZero(days);
+        selectors.spansEl[1].textContent = addLeadingZero(hours);
+        selectors.spansEl[2].textContent = addLeadingZero(minutes);
+        selectors.spansEl[3].textContent = addLeadingZero(seconds);
+
+         if (timerValue < 1000) {
+            clearInterval(timer);
+             selectors.spansEl.textContent = '00';
+             selectors.buttonEl.disabled = false;
+
+    }
+    }, 1000);
 
 
-
-
-
+}  
 
 function addLeadingZero(value) {
     return String(value).padStart(2, '0');
@@ -89,6 +82,9 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(5524140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+
+selectors.containerEl.style.display = 'flex';
+selectors.containerEl.style.gap = '25px'
+selectors.containerEl.style.paddingTop = '20px'           
+selectors.containerEl.style.color = 'orange'
+selectors.containerEl.style.fontSize = '20px'
