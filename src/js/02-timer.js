@@ -6,6 +6,10 @@ const selectors = {
     inputEl: document.querySelector('[id="datetime-picker"]'),
     buttonEl: document.querySelector('[data-start]'),
     spansEl: document.querySelectorAll('.value'),
+    daysEl: document.querySelector('[data-days]'),
+    hoursEl: document.querySelector('[data-hours]'),
+    minutesEl: document.querySelector('[data-minutes]'),
+    secondsEl: document.querySelector('[data-seconds]'),
     containerEl: document.querySelector('.timer'),
 };
 
@@ -43,20 +47,17 @@ function handlerStart() {
         
         timerValue = selectedDay - currentDate;
         const { days, hours, minutes, seconds } = convertMs(timerValue);
-        selectors.spansEl[0].textContent = addLeadingZero(days);
-        selectors.spansEl[1].textContent = addLeadingZero(hours);
-        selectors.spansEl[2].textContent = addLeadingZero(minutes);
-        selectors.spansEl[3].textContent = addLeadingZero(seconds);
+        selectors.daysEl.textContent = addLeadingZero(days);
+        selectors.hoursEl.textContent = addLeadingZero(hours);
+        selectors.minutesEl.textContent = addLeadingZero(minutes);
+        selectors.secondsEl.textContent = addLeadingZero(seconds);
 
-         if (timerValue < 1000) {
+        if (timerValue < 1000) {
             clearInterval(timer);
              selectors.spansEl.textContent = '00';
-             selectors.buttonEl.disabled = false;
-
-    }
+            selectors.buttonEl.disabled = false;
+        }
     }, 1000);
-
-
 }  
 
 function addLeadingZero(value) {
@@ -84,7 +85,8 @@ function convertMs(ms) {
 
 
 selectors.containerEl.style.display = 'flex';
-selectors.containerEl.style.gap = '25px'
-selectors.containerEl.style.paddingTop = '20px'           
-selectors.containerEl.style.color = 'orange'
-selectors.containerEl.style.fontSize = '20px'
+selectors.containerEl.style.gap = '25px';
+selectors.containerEl.style.paddingTop = '20px';         
+selectors.containerEl.style.color = 'orange';
+selectors.containerEl.style.fontSize = '20px';
+
