@@ -45,7 +45,7 @@ function handlerStart() {
         const currentDate = new Date();
         selectors.buttonEl.disabled = true;
         
-        timerValue = selectedDay - currentDate;
+        const timerValue = selectedDay - currentDate;
         const { days, hours, minutes, seconds } = convertMs(timerValue);
         selectors.daysEl.textContent = addLeadingZero(days);
         selectors.hoursEl.textContent = addLeadingZero(hours);
