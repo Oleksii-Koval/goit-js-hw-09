@@ -12,21 +12,18 @@ function handlerForm(event) {
   const inputDelay = Number(delay.value);
   const inputStep = Number(step.value);
 
-  if (inputAmount < 0 || inputDelay < 0 || inputStep < 0) {
-    Notify.warning(`❗ Please enter a positive number`);
-  } else {
-    for (let i = 1; i <= inputAmount; i += 1){
-    const delays = (inputDelay + inputStep * i) - inputStep;
-    let position = i;
-    createPromise(position, delays)
-      .then(({ position, delay }) => {
-        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-      })
-      .catch (({ position, delay }) => {
-        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-      });
-    };
+  for (let i = 1; i <= inputAmount; i += 1){
+  const delays = (inputDelay + inputStep * i) - inputStep;
+  let position = i;
+  createPromise(position, delays)
+    .then(({ position, delay }) => {
+      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+    })
+    .catch (({ position, delay }) => {
+      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+    });
   };
+ 
 };
 
 function createPromise(position, delay) {

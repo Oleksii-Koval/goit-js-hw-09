@@ -25,9 +25,10 @@ const options = {
     onOpen() {
       require("flatpickr/dist/themes/confetti.css");
   },
-  onClose(selectedDates) {
-      const currentDate = new Date();
-      if (selectedDates[0] - currentDate < 0) {
+  onClose([selectedDates]) {
+      const currentDate = Date.now();
+
+      if (selectedDates[0] < currentDate) {
           Notify.failure('Please choose a date in the future');  
           selectors.buttonEl.disabled = true;
       } else {
@@ -41,24 +42,31 @@ flatpickr(selectors.inputEl, options);
 
 function handlerStart() {
     const timer = setInterval(() => {
-        const selectedDay = new Date(selectors.inputEl.value);
-        const currentDate = new Date();
-        selectors.buttonEl.disabled = true;
+       
+    selectors.buttonEl.disabled = true;
+    const selectedDay = new Date(selectors.inputEl.value);
+    const currentDate = Date.now();
+    const timerValue = selectedDay - currentDate;
+    const { days, hours, minutes, seconds } = convertMs(timerValue);
         
-        const timerValue = selectedDay - currentDate;
-        const { days, hours, minutes, seconds } = convertMs(timerValue);
-        selectors.daysEl.textContent = addLeadingZero(days);
-        selectors.hoursEl.textContent = addLeadingZero(hours);
-        selectors.minutesEl.textContent = addLeadingZero(minutes);
-        selectors.secondsEl.textContent = addLeadingZero(seconds);
+        
 
-        if (timerValue < 1000) {
-            clearInterval(timer);
-             selectors.spansEl.textContent = '00';
-            selectors.buttonEl.disabled = false;
-        }
+    if (timerValue > 0) {
+     updateTimerDisplay( days, hours, minutes, seconds ) 
+    } else {
+    clearInterval(timer);
+     selectors.spansEl.textContent = '00';
+     selectors.buttonEl.disabled = false;
+    }
     }, 1000);
 }  
+
+function updateTimerDisplay( days, hours, minutes, seconds ) {
+    selectors.daysEl.textContent = addLeadingZero(days);
+    selectors.hoursEl.textContent = addLeadingZero(hours);
+    selectors.minutesEl.textContent = addLeadingZero(minutes);
+    selectors.secondsEl.textContent = addLeadingZero(seconds);
+}
 
 function addLeadingZero(value) {
     return String(value).padStart(2, '0');

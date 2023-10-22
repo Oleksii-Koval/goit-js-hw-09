@@ -8,7 +8,7 @@ selectors.startBtnEl.addEventListener("click", handlerStart);
 selectors.stopBtnEl.addEventListener("click", handlerStop);
 let changeBackground = null;
 function handlerStart() {
-    onStart();
+    btnToggle(true);
     changeBackground = setInterval(() => {
         selectors.bodyEl.style.backgroundColor = getRandomHexColor()
     }, 1000)
@@ -16,18 +16,13 @@ function handlerStart() {
 }
 
 function handlerStop() {
-    onStop();
+    btnToggle(false);
     clearInterval(changeBackground)
 }
 
-function onStart() {
-    selectors.startBtnEl.disabled = true;
-    selectors.stopBtnEl.disabled = false;
-}
-
-function onStop() {
-    selectors.startBtnEl.disabled = false;
-    selectors.stopBtnEl.disabled = true;
+function btnToggle(isEnable) {
+    selectors.startBtnEl.disabled = isEnable;
+    selectors.stopBtnEl.disabled = !isEnable;
 }
 
 function getRandomHexColor() {
